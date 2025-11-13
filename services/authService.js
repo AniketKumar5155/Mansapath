@@ -1,17 +1,32 @@
-const { Users } = require("../models");
-const { validateData } = require("../utils/validateData");
-const jwt = require('jsonwebtoken');
+const { User } = require("../models");
+const verifyData = require("../utils/validateData");
+const generateTokens = require("../utils/generateTokens");
 
-const employeeLogin = async(email, password) => {
-    const user = await Users.findOne({ where: { email } });
-    const isValid = await validateData(password, user.password_hash);
+const employeeLogin = async (email, password) => {
+    const user = await User.findOne({
+        where: {
+            email
+        }
+    });
 
-    if (!isValid) {
-        throw new Error("Invalid credentials");
-    }
+    if (!user) throw new Error("User not found");
 
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    user.token = token;
+    const isPasswordValid = await verifyData(password, user.password_hash);
+    if (!isPasswordValid) throw new Error("Incorrect password");
 
-    return user;
+    const { accessToken, refreshToken } = await generateTokens({
+        userId: user.id,
+        email: user.email,
+        role: user.role,
+    });
+
+    return { 
+        user, 
+        accessToken, 
+        refreshToken 
+    };
 }
+
+module.exports = {
+    employeeLogin
+};

@@ -27,7 +27,7 @@ const employeeSchema = z.object({
         .email("Invalid email format")
         .max(100, "Email must be at most 100 characters"),
     
-    password_hash: z
+    password: z
         .string({ required_error: "Password is required"})
         .min(8, "Password must be at least 8 characters")
         .max(255, "Password must be at most 255 characters"),

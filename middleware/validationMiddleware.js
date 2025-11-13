@@ -1,54 +1,24 @@
-const { formSubmissionSchema } = require('../validator/formSchema');
-const { employeeSchema } = require('../validator/employeeSchema');
-
-const validateFormSubmission = (req, res, next) => {
+const validateZod = (schema) => {
+  return (req, res, next) => {
     try {
-        const validatedData = formSubmissionSchema.parse(req.body);
-        req.validatedData = validatedData;
-        next();
+      const validatedData = schema.parse(req.body);
+      req.validatedData = validatedData;
+      next();
     } catch (error) {
-        console.error('Validation error', error);
-        if (error?.name === 'ZodError') {
-            const errors = error.errors.map(err => ({
-                field: err.path.join('.'),
-                message: err.message,
-            }));
-            return res.status(400).json({
-                error: 'Validation failed',
-                details: errors,
-            });
-        }
+      const formattedErrors = error?.errors?.map((err) => ({
+        field: err.path?.[0] || "unknown",
+        message: err.message || "Invalid input",
+      }));
 
-        console.error('Unexpected validation error', error);
-        return res.status(400).json({
-            error: 'Invalid input',
-        });
+      console.error("Zod validation error:", error);
+  
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed",
+        errors: formattedErrors || [{ field: "unknown", message: error.message }],
+      });
     }
+  };
 };
 
-const validateEmployee = (req, res, next) => {
-    try {
-        const validatedData = employeeSchema.parse(req.body);
-        req.validatedData = validatedData;
-        next();
-    } catch (error) {
-        console.error('Validation error', error);
-        if (error?.name === 'ZodError') {
-            const errors = error.errors.map(err => ({
-                field: err.path.join('.'),
-                message: err.message,
-            }));
-            return res.status(400).json({
-                error: 'Validation failed',
-                details: errors,
-            });
-        }
-
-        console.error('Unexpected validation error', error);
-        return res.status(400).json({
-            error: 'Invalid input',
-        });
-    }
-};
-
-module.exports = { validateFormSubmission, validateEmployee };
+module.exports = { validateZod };

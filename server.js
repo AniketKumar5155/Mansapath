@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const db = require('./models');
 const formSubmissionRoute = require('./route/formSubmissionRoute');
 const employeeRoute = require('./route/employeeRoute');
+const authRoute = require('./route/authRoute');
 // const notFoundMiddleware = require('./middleware/notFoundMiddleware');
 // const errorHandlerMiddleware = require('./middleware/errorHandlerMiddleware');
 
@@ -39,6 +40,7 @@ app.use(
 
 app.use('/api/forms', formSubmissionRoute);
 app.use('/api/employees', employeeRoute);
+app.use('/api/auth', authRoute);
 
 
 const PORT = process.env.PORT || 3000;

@@ -6,8 +6,9 @@ const {
     createNewEmployee,
 } = require("../controllers/employeeController");
 
-const { validateEmployee } = require("../middleware/validationMiddleware");
+const { validateZod } = require("../middleware/validationMiddleware");
+const { employeeSchema } = require("../validator/employeeSchema");
 
-employeeRoute.post('/create', validateEmployee, createNewEmployee);
+employeeRoute.post('/create', validateZod(employeeSchema), createNewEmployee);
 
 module.exports = employeeRoute;
