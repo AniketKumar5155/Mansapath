@@ -23,6 +23,16 @@ const createEmployee = async (employeeData) => {
   }
 };
 
+const getAllEmployeesService = async ({sortType = "created_at", sortDirection = "ASC"}) => {
+    const safeOrder = sortDirection.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+    const employees = await User.findAll({
+        where: { role: 'EMPLOYEE' },
+        order: [[sortType, safeOrder]],
+    });
+    return employees;
+}
+
 module.exports = {
     createEmployee,
+    getAllEmployeesService,
 };

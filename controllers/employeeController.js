@@ -1,5 +1,6 @@
 const {
     createEmployee,
+    getAllEmployeesService,
 } = require("../services/employeeService");
 
 const createNewEmployee = async (req, res) => {
@@ -20,6 +21,30 @@ const createNewEmployee = async (req, res) => {
     }
 }
 
+const getAllEmployees = async (req, res) => {
+    try {
+        const sortType = req.query.sort || 'created_at';
+        const sortDirection = req.query.order?.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+        const employees = await getAllEmployeesService({
+            sortType,
+            sortDirection,
+        });
+        return res.json({
+            success: true,
+            message: 'Employees retrieved successfully',
+            data: employees,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            error: 'Internal Server Error',
+        });
+    }
+};
+
 module.exports = {
     createNewEmployee,
+    getAllEmployees,
 };
