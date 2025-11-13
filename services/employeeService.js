@@ -23,4 +23,6 @@ const createEmployee = async (employeeData) => {
   }
 };
 
-module.exports = { createEmployee };
+module.exports = {
+    createEmployee,
+};

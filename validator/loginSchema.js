@@ -11,4 +11,6 @@ const loginSchema = z.object({
         .max(255, "Password must be at most 255 characters"),
 });
 
-module.exports = { loginSchema };
+module.exports = { 
+    loginSchema 
+};

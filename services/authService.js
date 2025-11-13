@@ -14,7 +14,7 @@ const employeeLogin = async (email, password) => {
     const isPasswordValid = await verifyData(password, user.password_hash);
     if (!isPasswordValid) throw new Error("Incorrect password");
 
-    const { accessToken, refreshToken } = await generateTokens({
+    const { accessToken, refreshToken } = generateTokens({
         userId: user.id,
         email: user.email,
         role: user.role,

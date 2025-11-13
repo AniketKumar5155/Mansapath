@@ -7,7 +7,7 @@ const createSubmission = async (submissionData) => {
     return submission;
 };
 
-const getAllSubmissions = async ({ sortType = 'createdAt', sortDirection = 'DESC', status = 'OPEN', isDeleted = false, isArchived = false }) => {
+const getAllSubmissions = async ({ sortType = 'created_at', sortDirection = 'DESC', status = 'OPEN', isDeleted = false, isArchived = false }) => {
     const safeOrder = sortDirection.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
     const submissions = await FormSubmission.findAll({
         where: { status: String(status), is_deleted: Boolean(isDeleted), is_archived: Boolean(isArchived) },
@@ -73,6 +73,17 @@ const unarchiveSubmission = async (id) => {
     return submission;
 }
 
+const changeSubmissionStatus = async (id, newStatus) => {
+    validateId(id);
+    const submission = await FormSubmission.findByPk(id);
+    if(!submission){
+        throw new Error("Submission not found");
+    }
+    submission.status = newStatus;
+    await submission.save();
+    return submission;
+}
+
 
 module.exports = {
     createSubmission,
@@ -81,4 +92,5 @@ module.exports = {
     restoreSubmission,
     archiveSubmission,
     unarchiveSubmission,
+    changeSubmissionStatus,
 };

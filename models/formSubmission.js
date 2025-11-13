@@ -66,12 +66,12 @@ module.exports = (sequelize) => {
                 allowNull: false,
                 defaultValue: false,
             },
-            createdAt: {
+            created_at: {
                 type: DataTypes.DATE,
                 allowNull: false,
                 defaultValue: DataTypes.NOW,
             },
-            updatedAt: {
+            updated_at: {
                 type: DataTypes.DATE,
                 allowNull: false,
                 defaultValue: DataTypes.NOW,
@@ -81,6 +81,7 @@ module.exports = (sequelize) => {
             sequelize,
             modelName: 'FormSubmission',
             tableName: 'FormSubmissions',
+            timestamps: false,
         }
     );
 

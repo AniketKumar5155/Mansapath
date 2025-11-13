@@ -8,18 +8,21 @@ const {
     restoreSubmission,
     archiveSubmission,
     unarchiveSubmission,
+    changeSubmissionStatus
 } = require('../controllers/formSubmissionController');
 
 const authMiddleware = require('../middleware/authMiddleware');
-const { validateZod } = require('../middleware/validationMiddleware');
-const { formSubmissionSchema } = require('../validator/formSchema');
+const {
+    validateFormSubmission
+} = require('../middleware/validationMiddleware');
 
-formSubmissionRoute.post('/submit',createSubmission);
-formSubmissionRoute.get('/submissions', validateZod(formSubmissionSchema), authMiddleware, getAllSubmissions);
-formSubmissionRoute.patch('/soft-delete/:id', validateZod(formSubmissionSchema), authMiddleware, softDeleteSubmission);
-formSubmissionRoute.patch('/restore/:id', validateZod(formSubmissionSchema), authMiddleware, restoreSubmission);
-formSubmissionRoute.patch('/archive/:id', validateZod(formSubmissionSchema), authMiddleware, archiveSubmission);
-formSubmissionRoute.patch('/unarchive/:id', validateZod(formSubmissionSchema), authMiddleware, unarchiveSubmission);
+formSubmissionRoute.post('/submit', validateFormSubmission, createSubmission);
+formSubmissionRoute.get('/submissions', authMiddleware, getAllSubmissions);
+formSubmissionRoute.patch('/soft-delete/:id',authMiddleware, softDeleteSubmission);
+formSubmissionRoute.patch('/restore/:id',authMiddleware, restoreSubmission);
+formSubmissionRoute.patch('/archive/:id',authMiddleware, archiveSubmission);
+formSubmissionRoute.patch('/unarchive/:id',authMiddleware, unarchiveSubmission);
+formSubmissionRoute.patch('/change-status/:id',authMiddleware, changeSubmissionStatus);
 
 
 module.exports = formSubmissionRoute;

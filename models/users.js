@@ -5,6 +5,8 @@ const { Model, DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   class User extends Model {
     static associate(models) {
+      // Define associations here later if needed
+      // e.g. User.hasMany(models.EmployeeTask)
     }
   }
 
@@ -62,7 +64,7 @@ module.exports = (sequelize) => {
       sequelize,
       modelName: 'User',
       tableName: 'Users',
-      timestamps: true,
+      timestamps: false,
       underscored: true,
     }
   );

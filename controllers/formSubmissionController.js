@@ -19,7 +19,7 @@ const createSubmission = async (req, res) => {
 
 const getAllSubmissions = async (req, res) => {
     try {
-        const sortType = req.query.sort || 'createdAt';
+        const sortType = req.query.sort || 'created_at';
         const sortDirection = req.query.order?.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
         const status = req.query.status || 'OPEN';
         const isDeleted = req.query.isDeleted === 'TRUE';
@@ -147,6 +147,51 @@ const unarchiveSubmission = async (req, res) => {
     }
 }
 
+const changeSubmissionStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        if (!status) {
+            return res.status(400).json({
+                success: false,
+                error: 'Status is required',
+            });
+        }
+
+        const validStatuses = ['OPEN', 'PENDING', 'IN_PROGRESS', 'RESOLVED', 'CLOSED'];
+        if (!validStatuses.includes(status.toUpperCase())) {
+            return res.status(400).json({
+                success: false,
+                error: `Invalid status. Valid values: ${validStatuses.join(', ')}`,
+            });
+        }
+
+        const submission = await formSubmissionService.changeSubmissionStatus(id, status.toUpperCase());
+
+        return res.json({
+            success: true,
+            message: `Submission status changed to ${status.toUpperCase()} successfully`,
+            data: submission,
+        });
+    } catch (error) {
+        console.error(error);
+
+        if (error.message === "Submission not found") {
+            return res.status(404).json({
+                success: false,
+                error: error.message,
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            error: 'Internal Server Error',
+        });
+    }
+};
+
+
 module.exports = {
     createSubmission,
     getAllSubmissions,
@@ -154,4 +199,5 @@ module.exports = {
     restoreSubmission,
     archiveSubmission,
     unarchiveSubmission,
+    changeSubmissionStatus,
 };
