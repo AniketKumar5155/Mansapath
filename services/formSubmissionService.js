@@ -1,4 +1,3 @@
-const { noTrueLogging } = require('sequelize/lib/utils/deprecations');
 const { FormSubmission } = require('../models');
 const validateId = require('../utils/validateId');
 

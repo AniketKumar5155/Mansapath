@@ -52,6 +52,12 @@ module.exports = (sequelize) => {
                     is: /^[0-9+\- ]+$/i,
                 },
             },
+
+            address: {
+                type: DataTypes.STRING(300),
+                allowNull: false,
+            },
+
             problem_description: {
                 type: DataTypes.TEXT,
                 allowNull: true,

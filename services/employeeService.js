@@ -32,6 +32,8 @@ const getAllEmployeesService = async ({sortType = "created_at", sortDirection = 
     return employees;
 }
 
+
+
 module.exports = {
     createEmployee,
     getAllEmployeesService,

@@ -1,4 +1,8 @@
 import { z } from "zod";
+8
+// TODO
+// Add addresss, whatsapp number
+// statutes on Mental Fitness and Mental Therapy
 
 export const formSubmissionSchema = z.object({
   first_name: z
@@ -31,6 +35,11 @@ export const formSubmissionSchema = z.object({
   phone_number: z
     .string({ required_error: "Phone number is required" })
     .regex(/^[0-9+\-() ]{7,15}$/, "Invalid phone number format"),
+
+  address: z
+    .string({ required_error: "Addrtess is required" })
+    .min(1, "Addresss cannot be empty")
+    .max(300, "Address must be at most 300 characters"),
 
   problem_description: z
     .string()

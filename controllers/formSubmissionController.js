@@ -9,13 +9,12 @@ const createSubmission = async (req, res) => {
             data: submission,
         });
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             success: false,
             error: 'Internal Server Error'
         });
     }
-};
+}
 
 const getAllSubmissions = async (req, res) => {
     try {
@@ -39,13 +38,12 @@ const getAllSubmissions = async (req, res) => {
             data: submissions
         });
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             success: false,
             error: 'Internal Server Error'
         });
     }
-};
+}
 
 const softDeleteSubmission = async (req, res) => {
     try {
@@ -72,7 +70,7 @@ const softDeleteSubmission = async (req, res) => {
             error: 'Internal Server Error',
         });
     }
-};
+}
 
 const restoreSubmission = async (req, res) => {
     try {
@@ -85,8 +83,6 @@ const restoreSubmission = async (req, res) => {
             data: submission,
         });
     } catch (error) {
-        console.error(error);
-
         if (error.message === "Submission not found" || error.message === "Submission is not deleted") {
             return res.status(404).json({
                 success: false,
@@ -99,7 +95,7 @@ const restoreSubmission = async (req, res) => {
             error: 'Internal Server Error',
         });
     }
-};
+}
 
 const archiveSubmission = async (req, res) => {
     const { id } = req.params;
@@ -175,8 +171,6 @@ const changeSubmissionStatus = async (req, res) => {
             data: submission,
         });
     } catch (error) {
-        console.error(error);
-
         if (error.message === "Submission not found") {
             return res.status(404).json({
                 success: false,
@@ -189,7 +183,7 @@ const changeSubmissionStatus = async (req, res) => {
             error: 'Internal Server Error',
         });
     }
-};
+}
 
 
 module.exports = {

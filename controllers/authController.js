@@ -21,7 +21,7 @@ const loginController = async (req, res) => {
             user,
         });
     } catch (error) {
-        console.error('Login error', error);
+        console.log(error);
         return res.status(500).json({
             success: false,
             error: 'Internal Server Error',
@@ -44,7 +44,6 @@ const logoutController = async (req, res) => {
             message: "Logout successful",
         });
     } catch (error) {
-        console.error('Logout error', error);
         return res.status(500).json({
             success: false,
             error: 'Internal Server Error',

@@ -39,6 +39,12 @@ module.exports = {
         type: Sequelize.STRING(15),
         allowNull: false,
       },
+
+      address: {
+        type: Sequelize.STRING(300),
+        allowNull: false,
+      },
+
       problem_description: {
         type: Sequelize.TEXT,
         allowNull: true,
