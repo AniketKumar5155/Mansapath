@@ -33,6 +33,10 @@ module.exports = (sequelize) => {
                 type: DataTypes.ENUM('MALE', 'FEMALE', 'OTHER', 'RATHER NOT SAY', "PINEAPPLE"),
                 allowNull: false,
             },
+            age: {
+                type: DataTypes.INTEGER(3),
+                allowNull: false,
+            },
             status: {
                 type: DataTypes.ENUM('PENDING', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'OPEN'),
                 allowNull: false,

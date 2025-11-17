@@ -26,6 +26,10 @@ module.exports = {
         type: Sequelize.ENUM('MALE', 'FEMALE', 'OTHER', 'RATHER NOT SAY', 'PINEAPPLE'),
         allowNull: false,
       },
+      age: {
+        type: Sequelize.INTEGER(3),
+        allowNull: false,
+      },
       status: {
         type: Sequelize.ENUM('PENDING', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'OPEN'),
         allowNull: false,

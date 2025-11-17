@@ -21,6 +21,11 @@ export const formSubmissionSchema = z.object({
     required_error: "Gender is required",
   }),
 
+  age: z
+    .string({ required_error: "Age is required" })
+    .min(1, "Age cannot be empty")
+    .max(3, "Age cannot be greater than 120"),
+
   status: z.enum(
     ["PENDING", "IN_PROGRESS", "RESOLVED", "CLOSED", "OPEN"],
     { required_error: "Status is required" }
