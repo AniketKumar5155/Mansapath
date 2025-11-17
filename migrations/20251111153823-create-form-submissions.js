@@ -31,6 +31,11 @@ module.exports = {
         allowNull: false,
         defaultValue: 'OPEN',
       },
+      category: {
+        type: Sequelize.ENUM('MENTAL FITNESS', 'MENTAL THERAPY'),
+        allowNull: true,
+        defaultValue: null,
+      },
       email: {
         type: Sequelize.STRING(100),
         allowNull: true,
@@ -39,12 +44,10 @@ module.exports = {
         type: Sequelize.STRING(15),
         allowNull: false,
       },
-
       address: {
         type: Sequelize.STRING(300),
         allowNull: false,
       },
-
       problem_description: {
         type: Sequelize.TEXT,
         allowNull: true,

@@ -38,6 +38,11 @@ module.exports = (sequelize) => {
                 allowNull: false,
                 defaultValue: 'OPEN',
             },
+            category: {
+                type: DataTypes.ENUM('MENTAL FITNESS, MENTAL THERAPY'),
+                allowNull: true,
+                defaultValue: null,
+            },
             email: {
                 type: DataTypes.STRING(100),
                 allowNull: true,
@@ -52,12 +57,10 @@ module.exports = (sequelize) => {
                     is: /^[0-9+\- ]+$/i,
                 },
             },
-
             address: {
                 type: DataTypes.STRING(300),
                 allowNull: false,
             },
-
             problem_description: {
                 type: DataTypes.TEXT,
                 allowNull: true,

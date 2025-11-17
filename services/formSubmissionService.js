@@ -6,15 +6,28 @@ const createSubmission = async (submissionData) => {
     return submission;
 };
 
-const getAllSubmissions = async ({ sortType = 'created_at', sortDirection = 'DESC', status = 'OPEN', isDeleted = false, isArchived = false }) => {
+const getAllSubmissions = async ({
+    sortType = 'created_at',
+    sortDirection = 'DESC',
+    status,
+}) => {
+
     const safeOrder = sortDirection.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+
+    const whereClause = {};
+
+    if (status) {
+        whereClause.status = status;
+    }
+
     const submissions = await FormSubmission.findAll({
-        where: { status: String(status), is_deleted: Boolean(isDeleted), is_archived: Boolean(isArchived) },
+        where: whereClause,
         order: [[sortType, safeOrder]],
     });
 
     return submissions;
 };
+
 
 const softDeleteSubmission = async (id) => {
     validateId(id);
@@ -72,16 +85,20 @@ const unarchiveSubmission = async (id) => {
     return submission;
 }
 
-const changeSubmissionStatus = async (id, newStatus) => {
+const updateFormSubmission = async (id, updatedData) => {
     validateId(id);
     const submission = await FormSubmission.findByPk(id);
-    if(!submission){
+    if (!submission) {
         throw new Error("Submission not found");
     }
-    submission.status = newStatus;
-    await submission.save();
+    if (submission.is_deleted) {
+        throw new Error("Cannot update a deleted submission");
+    }
+
+    await submission.update(updatedData);
     return submission;
-}
+};
+
 
 
 module.exports = {
@@ -91,5 +108,5 @@ module.exports = {
     restoreSubmission,
     archiveSubmission,
     unarchiveSubmission,
-    changeSubmissionStatus,
+    updateFormSubmission,
 };

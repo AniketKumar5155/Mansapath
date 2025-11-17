@@ -20,7 +20,7 @@ const getAllSubmissions = async (req, res) => {
     try {
         const sortType = req.query.sort || 'created_at';
         const sortDirection = req.query.order?.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
-        const status = req.query.status || 'OPEN';
+        const status = req.query.status;
         const isDeleted = req.query.isDeleted === 'TRUE';
         const isArchived = req.query.isArchived === 'TRUE';
 
@@ -143,47 +143,31 @@ const unarchiveSubmission = async (req, res) => {
     }
 }
 
-const changeSubmissionStatus = async (req, res) => {
+const updateFormSubmission = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status } = req.body;
 
-        if (!status) {
-            return res.status(400).json({
-                success: false,
-                error: 'Status is required',
-            });
-        }
-
-        const validStatuses = ['OPEN', 'PENDING', 'IN_PROGRESS', 'RESOLVED', 'CLOSED'];
-        if (!validStatuses.includes(status.toUpperCase())) {
-            return res.status(400).json({
-                success: false,
-                error: `Invalid status. Valid values: ${validStatuses.join(', ')}`,
-            });
-        }
-
-        const submission = await formSubmissionService.changeSubmissionStatus(id, status.toUpperCase());
+        const submission = await formSubmissionService.updateFormSubmission(id, req.validatedData);
 
         return res.json({
             success: true,
-            message: `Submission status changed to ${status.toUpperCase()} successfully`,
+            message: "Form submission updated successfully",
             data: submission,
         });
+
     } catch (error) {
-        if (error.message === "Submission not found") {
+        if (error.message === "Submission not found" || error.message === "Cannot update a deleted submission") {
             return res.status(404).json({
                 success: false,
-                error: error.message,
+                error: error.message
             });
         }
-
-        return res.status(500).json({
-            success: false,
-            error: 'Internal Server Error',
+        return res.status(500).json({ 
+            success: false, 
+            error: "Internal Server Error" 
         });
     }
-}
+};
 
 
 module.exports = {
@@ -193,5 +177,5 @@ module.exports = {
     restoreSubmission,
     archiveSubmission,
     unarchiveSubmission,
-    changeSubmissionStatus,
+    updateFormSubmission,
 };

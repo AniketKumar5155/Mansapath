@@ -11,7 +11,7 @@ const { validateEmployee } = require("../middleware/validationMiddleware");
 const authMiddleware = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
 
-employeeRoute.post('/create', authMiddleware, authorize(['SUPERADMIN']), validateEmployee, createNewEmployee);
-employeeRoute.get('/all', authMiddleware, authorize(['SUPERADMIN']), getAllEmployees);
+employeeRoute.post('/create-employee',validateEmployee, createNewEmployee);
+employeeRoute.get('/employees', authMiddleware, authorize(['SUPERADMIN']), getAllEmployees);
 
 module.exports = employeeRoute;
