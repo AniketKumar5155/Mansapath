@@ -1,11 +1,15 @@
-const { 
+const {
     formSubmissionSchema,
     formUpdateSchema
- } = require('../validator/formSchema');
+} = require('../validator/formSchema');
 const { employeeSchema } = require('../validator/employeeSchema');
 
 const validateFormSubmission = (req, res, next) => {
     try {
+        if (req.body.age) {
+            req.body.age = Number(req.body.age);
+        }
+
         const validatedData = formSubmissionSchema.parse(req.body);
         req.validatedData = validatedData;
         next();
@@ -56,6 +60,10 @@ const validateEmployee = (req, res, next) => {
 
 const validateUpdateSubmission = (req, res, next) => {
     try {
+        if (req.body.age) {
+            req.body.age = Number(req.body.age);
+        }
+
         const validated = formUpdateSchema.parse(req.body);
         req.validatedData = validated;
         next();
@@ -76,8 +84,8 @@ const validateUpdateSubmission = (req, res, next) => {
 module.exports = validateUpdateSubmission;
 
 
-module.exports = { 
-    validateFormSubmission, 
+module.exports = {
+    validateFormSubmission,
     validateEmployee,
     validateUpdateSubmission
- };
+};

@@ -43,7 +43,7 @@ module.exports = (sequelize) => {
                 defaultValue: 'OPEN',
             },
             category: {
-                type: DataTypes.ENUM('MENTAL FITNESS, MENTAL THERAPY'),
+                type: DataTypes.ENUM('MENTAL FITNESS', 'MENTAL THERAPY'),
                 allowNull: true,
                 defaultValue: null,
             },

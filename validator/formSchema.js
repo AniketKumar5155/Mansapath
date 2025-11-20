@@ -17,22 +17,24 @@ export const formSubmissionSchema = z.object({
     .min(1, "Last name cannot be empty")
     .max(50, "Last name must be at most 50 characters"),
 
-  gender: z.enum(["MALE", "FEMALE", "OTHER", "RATHER NOT SAY", "PINEAPPLE"], {
+  gender: z.enum(["MALE", "FEMALE", "OTHER", "RATHER NOT SAY"], {
     required_error: "Gender is required",
   }),
 
   age: z
-    .string({ required_error: "Age is required" })
+    .number({ required_error: "Age is required" })
+    .int("Age must be an integer")
     .min(1, "Age cannot be empty")
-    .max(3, "Age cannot be greater than 120"),
+    .max(120, "Age cannot be greater than 120"),
 
-  status: z.enum(
-    ["PENDING", "IN_PROGRESS", "RESOLVED", "CLOSED", "OPEN"],
-    { required_error: "Status is required" }
-  ).optional(),
+  status: z
+    .enum(["PENDING", "IN_PROGRESS", "RESOLVED", "CLOSED", "OPEN"], {
+      required_error: "Status is required",
+    })
+    .optional(),
 
   category: z
-    .enum(["MENTAL_FITNESS", "MENTAL_THERAPY"], {
+    .enum(["MENTAL FITNESS", "MENTAL THERAPY"], {
       required_error: "Category is required",
     })
     .nullable()
@@ -66,7 +68,14 @@ export const formUpdateSchema = z.object({
   middle_name: z.string().max(50).optional(),
   last_name: z.string().min(1).max(50).optional(),
 
-  gender: z.enum(["MALE", "FEMALE", "OTHER", "RATHER NOT SAY", "PINEAPPLE"]).optional(),
+  gender: z.enum(["MALE", "FEMALE", "OTHER", "RATHER NOT SAY"]).optional(),
+
+  age: z
+    .number()
+    .int("Age must be an integer")
+    .min(1, "Age cannot be empty")
+    .max(120, "Age cannot be greater than 120")
+    .optional(),
 
   email: z.string().email().max(100).optional(),
   phone_number: z.string().regex(/^[0-9+\-() ]{7,15}$/).optional(),
@@ -76,4 +85,3 @@ export const formUpdateSchema = z.object({
   status: z.enum(["PENDING", "IN_PROGRESS", "RESOLVED", "CLOSED", "OPEN"]).optional(),
   category: z.enum(["MENTAL FITNESS", "MENTAL THERAPY"]).optional()
 });
-

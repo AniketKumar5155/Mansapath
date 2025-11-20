@@ -16,6 +16,7 @@ const allowedOrigins = [
   'http://192.168.29.114:5173',
   'http://localhost:5174',
   'http://192.168.29.114:5174',
+  'https://xmjgqlt1-5173.inc1.devtunnels.ms',
 ];
 
 const app = express();
