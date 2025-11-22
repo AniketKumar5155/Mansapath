@@ -1,6 +1,7 @@
 const {
     createEmployee,
     getAllEmployeesService,
+    getEmployeesService,
     updateEmployee,
     // softDeleteEmployee,
     // restoreEmployee,
@@ -25,7 +26,23 @@ const createNewEmployee = async (req, res) => {
     }
 };
 
-const getAllEmployees = async (req, res) => {
+const getAllEmployeesController = async (req, res) => {
+    try{
+        const employees  = await getAllEmployeesService();
+        return res.status(200).json({
+            success: true,
+            message: "All employees fetched successfully",
+            data: employees,
+        })
+    }catch(error){
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetched all employees"
+        })
+    }
+}
+
+const getEmployeesController = async (req, res) => {
     try {
         const sortType = req.query.sortType || 'created_at';
         const sortDirection = req.query.sortDirection?.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
@@ -34,7 +51,7 @@ const getAllEmployees = async (req, res) => {
         const limit = req.query.limit ? Number(req.query.limit) : 10;
         const search = req.query.search || "";
 
-        const employees = await getAllEmployeesService({
+        const employees = await getEmployeesService({
             sortType,
             sortDirection,
             page,
@@ -186,7 +203,8 @@ const updateEmployeeController = async (req, res) => {
 // 
 module.exports = {
     createNewEmployee,
-    getAllEmployees,
+    getAllEmployeesController,
+    getEmployeesController,
     updateEmployeeController,
     // softDeleteEmployeeController,
     // restoreEmployeeController,

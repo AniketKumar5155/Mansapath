@@ -4,10 +4,11 @@ const formSubmissionRoute = express.Router();
 const {
     createSubmission,
     getAllSubmissions,
-    softDeleteSubmission,
-    restoreSubmission,
-    archiveSubmission,
-    unarchiveSubmission,
+    getSubmissions,
+    // softDeleteSubmission,
+    // restoreSubmission,
+    // archiveSubmission,
+    // unarchiveSubmission,
     updateFormSubmission
 } = require('../controllers/formSubmissionController');
 
@@ -18,7 +19,8 @@ const {
 } = require('../middleware/validationMiddleware');
 
 formSubmissionRoute.post('/submit', validateFormSubmission, createSubmission);
-formSubmissionRoute.get('/submissions', authMiddleware, getAllSubmissions);
+formSubmissionRoute.get('/all-submissions', authMiddleware, getAllSubmissions)
+formSubmissionRoute.get('/submissions', authMiddleware, getSubmissions);
 // formSubmissionRoute.patch('/soft-delete/:id',authMiddleware, softDeleteSubmission);
 // formSubmissionRoute.patch('/restore/:id',authMiddleware, restoreSubmission);
 // formSubmissionRoute.patch('/archive/:id',authMiddleware, archiveSubmission);

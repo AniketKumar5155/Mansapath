@@ -1,14 +1,19 @@
 const { FormSubmission } = require('../models');
 const validateId = require('../utils/validateId');
+const { Op } = require("sequelize");
+
 
 const createSubmission = async (submissionData) => {
     const submission = await FormSubmission.create(submissionData);
     return submission;
 };
 
-const { Op } = require("sequelize");
+const getAllSubmissions = async () => {
+    const submissions = await FormSubmission.findAll();
+    return submissions;
+}
 
-const getAllSubmissions = async ({
+const getSubmissions = async ({
     sortType = 'created_at',
     sortDirection = 'DESC',
     status,
@@ -126,6 +131,7 @@ const updateFormSubmission = async (id, updatedData) => {
 
 module.exports = {
     createSubmission,
+    getSubmissions,
     getAllSubmissions,
     // softDeleteSubmission,
     // restoreSubmission,

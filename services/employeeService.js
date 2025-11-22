@@ -16,7 +16,12 @@ const createEmployee = async (employeeData) => {
   });
 };
 
-const getAllEmployeesService = async ({
+const getAllEmployeesService = async () => {
+  const employees = await User.findAll();
+  return employees
+}
+
+const getEmployeesService = async ({
   sortType = "created_at",
   sortDirection = "ASC",
   page = 1,
@@ -122,6 +127,7 @@ const updateEmployee = async (id, updatedData) => {
 module.exports = {
   createEmployee,
   getAllEmployeesService,
+  getEmployeesService,
   updateEmployee,
   // softDeleteEmployee,
   // restoreEmployee,

@@ -17,6 +17,22 @@ const createSubmission = async (req, res) => {
 }
 
 const getAllSubmissions = async (req, res) => {
+    try{
+        const submissions = await formSubmissionService.getAllSubmissions();
+        return res.status(200).json({
+            success: true,
+            message: "All submissions fetched successfully",
+            data: submissions,
+        })
+    }catch(error){
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch all submissions"
+        })
+    }
+}
+
+const getSubmissions = async (req, res) => {
     try {
         const sortType = req.query.sortType ? req.query.sortType : 'created_at';
 
@@ -32,7 +48,7 @@ const getAllSubmissions = async (req, res) => {
 
         const search = req.query.search || "";
 
-        const result = await formSubmissionService.getAllSubmissions({
+        const result = await formSubmissionService.getSubmissions({
             status,
             sortType,
             sortDirection,
@@ -184,6 +200,7 @@ const updateFormSubmission = async (req, res) => {
 module.exports = {
     createSubmission,
     getAllSubmissions,
+    getSubmissions,
     // softDeleteSubmission,
     // restoreSubmission,
     // archiveSubmission,
