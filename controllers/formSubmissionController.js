@@ -9,6 +9,7 @@ const createSubmission = async (req, res) => {
             data: submission,
         });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             success: false,
             error: 'Internal Server Error'

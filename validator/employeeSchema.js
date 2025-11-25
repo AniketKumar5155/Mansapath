@@ -63,5 +63,77 @@ const employeeSchema = z.object({
         .optional()
         .default("EMPLOYEE"),
 });
+const updateEmployeeSchema = z.object({
+  first_name: z
+    .string()
+    .min(1, "First name cannot be empty")
+    .max(50, "First name must be at most 50 characters")
+    .optional(),
 
-module.exports = { employeeSchema };
+  middle_name: z
+    .string()
+    .max(50, "Middle name must be at most 50 characters")
+    .optional()
+    .or(z.literal("").optional()),
+
+  last_name: z
+    .string()
+    .min(1, "Last name cannot be empty")
+    .max(50, "Last name must be at most 50 characters")
+    .optional(),
+
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .max(50, "Username must be at most 50 characters")
+    .optional(),
+
+  email: z
+    .string()
+    .email("Invalid email format")
+    .max(100, "Email must be at most 100 characters")
+    .optional(),
+
+  phone_number: z
+    .string()
+    .regex(/^[0-9]{10}$/, "Phone number must be 10 digits")
+    .optional(),
+
+  blood_group: z
+    .enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"])
+    .optional(),
+
+  age: z
+    .number()
+    .int()
+    .min(18, "Minimum age is 18")
+    .max(60, "Maximum age is 60")
+    .optional(),
+
+  address: z
+    .string()
+    .min(5, "Address must be at least 5 characters")
+    .max(300, "Address must be at most 300 characters")
+    .optional(),
+
+  aadhar_number: z
+    .string()
+    .regex(/^[0-9]{12}$/, "Aadhar number must be 12 digits")
+    .optional(),
+
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(255, "Password must be at most 255 characters")
+    .optional(),
+
+  role: z
+    .enum(["SUPERADMIN", "EMPLOYEE"])
+    .optional(),
+})
+.strict();
+
+module.exports = { 
+    employeeSchema,
+    updateEmployeeSchema
+ };

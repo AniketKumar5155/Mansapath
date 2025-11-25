@@ -1,22 +1,23 @@
 const { User, RefreshToken } = require("../models");
 const verifyData = require("../utils/validateData");
 const generateTokens = require("../utils/generateTokens");
+const validateId = require("../utils/validateId");
 
 const employeeLogin = async (email, password, ip, userAgent) => {
 
-  const user = await User.findOne({ where: { email } });
+  const user = await User.unscoped().findOne({ where: { email } });
 
   if (!user) {
     const error = new Error("User not found");
     error.statusCode = 404;
     throw error;
   }
-// 
-//   if (!user.isActive) {
-    // const error = new Error("Account disabled");
-    // error.statusCode = 403;
-    // throw error;
-//   }
+  // 
+  //   if (!user.isActive) {
+  // const error = new Error("Account disabled");
+  // error.statusCode = 403;
+  // throw error;
+  //   }
 
   const isPasswordValid = await verifyData(password, user.password_hash);
 
@@ -44,10 +45,28 @@ const employeeLogin = async (email, password, ip, userAgent) => {
     id: user.id,
     email: user.email,
     role: user.role,
-    name: user.name
+    name: `${user.first_name} ${user.last_name}`
   };
 
   return { user: safeUser, accessToken, refreshToken };
 };
 
-module.exports = { employeeLogin };
+const getProfileService = async (userId) => {
+  validateId(userId);
+  const profileData = await User.findByPk(userId, {
+    attributes: {
+      exclude: ["password_hash", "created_at", "updated_at"],
+    }
+  })
+
+  if (!profileData) {
+    throw new Error("User not found");
+  }
+
+  return profileData;
+}
+
+module.exports = {
+  employeeLogin,
+  getProfileService,
+};

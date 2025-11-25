@@ -17,9 +17,7 @@ module.exports = (sequelize) => {
       },
 
       first_name: DataTypes.STRING(50),
-
       middle_name: DataTypes.STRING(50),
-
       last_name: DataTypes.STRING(50),
 
       username: {
@@ -96,6 +94,10 @@ module.exports = (sequelize) => {
       tableName: 'Users',
       timestamps: false,
       underscored: true,
+
+      defaultScope: {
+        attributes: { exclude: ['password_hash', "aadhar_number"] }
+      }
     }
   );
 

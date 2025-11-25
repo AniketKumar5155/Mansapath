@@ -11,9 +11,10 @@ const createEmployee = async (employeeData) => {
   const password_hash = await hashData(password);
 
   return await User.create({
-    ...rest,
-    password_hash,
-  });
+  ...rest,
+  password_hash,
+});
+
 };
 
 const getAllEmployeesService = async () => {

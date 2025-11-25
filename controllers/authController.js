@@ -1,4 +1,4 @@
-const { employeeLogin } = require("../services/authService");
+const { employeeLogin, getProfileService } = require("../services/authService");
 const { loginSchema } = require("../validator/loginSchema");
 const { RefreshToken } = require("../models");
 
@@ -63,4 +63,29 @@ const logoutController = async (req, res) => {
   }
 };
 
-module.exports = { loginController, logoutController };
+const getProfileController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const profileData = await getProfileService(userId)
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile fetched successfully",
+      data: profileData,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "internal Server Error",
+    })
+  }
+}
+
+
+
+module.exports = {
+  loginController,
+  logoutController,
+  getProfileController,
+};
