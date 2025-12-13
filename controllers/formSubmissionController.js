@@ -1,4 +1,5 @@
 const formSubmissionService = require('../services/formSubmissionService');
+const { default: buildFullName } = require('../utils/buildName');
 
 const createSubmission = async (req, res) => {
     try {
@@ -71,7 +72,45 @@ const getSubmissions = async (req, res) => {
         });
     }
 };
+const acceptSubmission = async (req, res) => {
+    try {
+        const { id } = req.params;
 
+        let employeeName = null;
+        if (req.user) {
+            employeeName = buildFullName(req.user);
+        }
+
+        if (!employeeName && req.body.employeeName) {
+            employeeName = req.body.employeeName;
+        }
+
+        if (!employeeName) {
+            return res.status(400).json({
+                success: false,
+                error: "Employee name is required"
+            });
+        }
+
+        const submission = await formSubmissionService.acceptSubmissionService(
+            id,
+            employeeName
+        );
+
+        return res.json({
+            success: true,
+            message: "Submission accepted successfully",
+            data: submission
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            error: "Internal Server Error"
+        });
+    }
+};
 
 // const softDeleteSubmission = async (req, res) => {
 // try {
@@ -184,6 +223,7 @@ const updateFormSubmission = async (req, res) => {
         });
 
     } catch (error) {
+        console.log(error);
         if (error.message === "Submission not found" || error.message === "Cannot update a deleted submission") {
             return res.status(404).json({
                 success: false,
@@ -202,6 +242,7 @@ module.exports = {
     createSubmission,
     getAllSubmissions,
     getSubmissions,
+    acceptSubmission,
     // softDeleteSubmission,
     // restoreSubmission,
     // archiveSubmission,

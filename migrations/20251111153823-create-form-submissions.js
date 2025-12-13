@@ -23,7 +23,7 @@ module.exports = {
         allowNull: false,
       },
       gender: {
-        type: Sequelize.ENUM('MALE', 'FEMALE', 'OTHER', 'RATHER NOT SAY', 'PINEAPPLE'),
+        type: Sequelize.ENUM('MALE', 'FEMALE', 'OTHER', 'RATHER NOT SAY'),
         allowNull: false,
       },
       age: {
@@ -32,11 +32,10 @@ module.exports = {
       },
       status: {
         type: Sequelize.ENUM('PENDING', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'OPEN'),
-        allowNull: false,
-        defaultValue: 'OPEN',
+        allowNull: true,
       },
       category: {
-        type: Sequelize.ENUM('MENTAL FITNESS', 'MENTAL THERAPY'),
+        type: Sequelize.ENUM('MENTAL FITNESS', 'MENTAL THERAPY', 'CHAITAINYA'),
         allowNull: true,
         defaultValue: null,
       },
@@ -65,6 +64,14 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+      },
+      accepted_by: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      accepted_at: {
+        type: Sequelize.DATE,
+        allowNull: true
       },
       created_at: {
         allowNull: false,

@@ -11,7 +11,7 @@ module.exports = {
       },
 
       user_id: {
-        type: Sequelize.INTEGER,   // MUST match users.id
+        type: Sequelize.INTEGER, 
         allowNull: false,
         references: {
           model: "users",

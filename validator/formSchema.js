@@ -27,19 +27,6 @@ export const formSubmissionSchema = z.object({
     .min(1, "Age cannot be empty")
     .max(120, "Age cannot be greater than 120"),
 
-  status: z
-    .enum(["PENDING", "IN_PROGRESS", "RESOLVED", "CLOSED", "OPEN"], {
-      required_error: "Status is required",
-    })
-    .optional(),
-
-  category: z
-    .enum(["MENTAL FITNESS", "MENTAL THERAPY"], {
-      required_error: "Category is required",
-    })
-    .nullable()
-    .optional(),
-
   email: z
     .string()
     .email("Invalid email format")
@@ -83,5 +70,5 @@ export const formUpdateSchema = z.object({
   problem_description: z.string().max(2000).optional(),
 
   status: z.enum(["PENDING", "IN_PROGRESS", "RESOLVED", "CLOSED", "OPEN"]).optional(),
-  category: z.enum(["MENTAL FITNESS", "MENTAL THERAPY"]).optional()
+  category: z.enum(["MENTAL FITNESS", "MENTAL THERAPY", "CHAITAINYA"]).optional()
 });

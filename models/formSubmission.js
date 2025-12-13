@@ -5,7 +5,7 @@ const { Model, DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
     class FormSubmission extends Model {
         static associate(models) {
-            
+
         }
     }
 
@@ -39,11 +39,10 @@ module.exports = (sequelize) => {
             },
             status: {
                 type: DataTypes.ENUM('PENDING', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'OPEN'),
-                allowNull: false,
-                defaultValue: 'OPEN',
+                allowNull: true,
             },
             category: {
-                type: DataTypes.ENUM('MENTAL FITNESS', 'MENTAL THERAPY'),
+                type: DataTypes.ENUM('MENTAL FITNESS', 'MENTAL THERAPY', 'CHAITAINYA'),
                 allowNull: true,
                 defaultValue: null,
             },
@@ -78,6 +77,14 @@ module.exports = (sequelize) => {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
                 defaultValue: false,
+            },
+            accepted_by: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            accepted_at: {
+                type: DataTypes.DATE,
+                allowNull: true
             },
             created_at: {
                 type: DataTypes.DATE,
