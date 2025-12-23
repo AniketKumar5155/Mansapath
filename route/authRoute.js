@@ -8,6 +8,6 @@ const authRouter = express.Router();
 authRouter.post("/login", loginController)
 authRouter.post("/refresh", refreshController);
 authRouter.post("/logout", logoutController);
-authRouter.get("/profile/me", authMiddleware, getProfileController)
+authRouter.get("/profile", authMiddleware, getProfileController)
 
 module.exports = authRouter;

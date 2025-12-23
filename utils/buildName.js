@@ -4,4 +4,4 @@ const buildFullName = (user) => {
         .join(" ");
 };
 
-export default buildFullName;
+module.exports = buildFullName;

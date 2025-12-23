@@ -77,61 +77,9 @@ const updateEmployee = async (id, updatedData) => {
   return employee;
 };
 
-// const softDeleteEmployee = async (id) => {
-  // validateId(id);
-// 
-  // const employee = await User.findByPk(id);
-  // if (!employee) throw new Error("Employee not found");
-  // if (employee.is_deleted) throw new Error("Employee already deleted");
-// 
-  // employee.is_deleted = true;
-  // await employee.save();
-  // return employee;
-// };
-
-// const restoreEmployee = async (id) => {
-  // validateId(id);
-// 
-  // const employee = await User.findByPk(id);
-  // if (!employee) throw new Error("Employee not found");
-  // if (!employee.is_deleted) throw new Error("Employee is not deleted");
-// 
-  // employee.is_deleted = false;
-  // await employee.save();
-  // return employee;
-// };
-
-// const archiveEmployee = async (id) => {
-  // validateId(id);
-// 
-  // const employee = await User.findByPk(id);
-  // if (!employee) throw new Error("Employee not found");
-  // if (employee.is_archived) throw new Error("Employee already archived");
-// 
-  // employee.is_archived = true;
-  // await employee.save();
-  // return employee;
-// }
-
-// const unarchiveEmployee = async (id) => {
-  // validateId(id);
-// 
-  // const employee = await User.findByPk(id);
-  // if (!employee) throw new Error("Employee not found");
-  // if (!employee.is_archived) throw new Error("Employee is not archived");
-// 
-  // employee.is_archived = false;
-  // await employee.save();
-  // return employee;
-// };
-
 module.exports = {
   createEmployee,
   getAllEmployeesService,
   getEmployeesService,
   updateEmployee,
-  // softDeleteEmployee,
-  // restoreEmployee,
-  // archiveEmployee,
-  // unarchiveEmployee, 
 };

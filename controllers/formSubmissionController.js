@@ -1,5 +1,5 @@
 const formSubmissionService = require('../services/formSubmissionService');
-const { default: buildFullName } = require('../utils/buildName');
+const buildFullName = require('../utils/buildName');
 
 const createSubmission = async (req, res) => {
     try {
@@ -10,44 +10,38 @@ const createSubmission = async (req, res) => {
             data: submission,
         });
     } catch (error) {
-        console.log(error)
+        console.error(error);
         return res.status(500).json({
             success: false,
             error: 'Internal Server Error'
         });
     }
-}
+};
 
 const getAllSubmissions = async (req, res) => {
-    try{
+    try {
         const submissions = await formSubmissionService.getAllSubmissions();
         return res.status(200).json({
             success: true,
             message: "All submissions fetched successfully",
             data: submissions,
-        })
-    }catch(error){
+        });
+    } catch (error) {
+        console.error(error);
         return res.status(500).json({
             success: false,
             message: "Failed to fetch all submissions"
-        })
+        });
     }
-}
+};
 
 const getSubmissions = async (req, res) => {
     try {
-        const sortType = req.query.sortType ? req.query.sortType : 'created_at';
-
-        let sortDirection = 'DESC';
-        if (req.query.sortDirection?.toUpperCase() === 'ASC') {
-            sortDirection = 'ASC';
-        }
-
+        const sortType = req.query.sortType || 'created_at';
+        const sortDirection = req.query.sortDirection?.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
         const status = req.query.status;
-
-        const page = req.query.page ? Number(req.query.page) : 1;
-        const limit = req.query.limit ? Number(req.query.limit) : 10;
-
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 10;
         const search = req.query.search || "";
 
         const result = await formSubmissionService.getSubmissions({
@@ -64,166 +58,47 @@ const getSubmissions = async (req, res) => {
             message: 'Form submissions retrieved successfully',
             data: result
         });
-
     } catch (error) {
+        console.error(error);
         return res.status(500).json({
             success: false,
             error: 'Internal Server Error'
         });
     }
 };
-const acceptSubmission = async (req, res) => {
+
+const getAcceptedSubmissionsController = async (req, res) => {
     try {
-        const { id } = req.params;
-
-        let employeeName = null;
-        if (req.user) {
-            employeeName = buildFullName(req.user);
-        }
-
-        if (!employeeName && req.body.employeeName) {
-            employeeName = req.body.employeeName;
-        }
-
-        if (!employeeName) {
-            return res.status(400).json({
-                success: false,
-                error: "Employee name is required"
-            });
-        }
-
-        const submission = await formSubmissionService.acceptSubmissionService(
-            id,
-            employeeName
-        );
-
-        return res.json({
+        const submissions = await formSubmissionService.getAcceptedSubmissionsService();
+        return res.status(200).json({
             success: true,
-            message: "Submission accepted successfully",
-            data: submission
+            message: "All accepted submissions fetched successfully",
+            data: submissions,
         });
-
     } catch (error) {
         console.error(error);
         return res.status(500).json({
             success: false,
-            error: "Internal Server Error"
+            message: "Failed to fetch accepted submissions"
         });
     }
 };
-
-// const softDeleteSubmission = async (req, res) => {
-// try {
-// const { id } = req.params;
-// const submission = await formSubmissionService.softDeleteSubmission(id);
-// 
-// return res.json({
-// success: true,
-// message: 'Form submission soft deleted successfully',
-// data: submission,
-// });
-// } catch (error) {
-// console.error(error);
-// 
-// if (error.message === "Submission not found" || error.message === "Submission already deleted") {
-// return res.status(404).json({
-// success: false,
-// error: error.message,
-// });
-// }
-// 
-// return res.status(500).json({
-// success: false,
-// error: 'Internal Server Error',
-// });
-// }
-// }
-// 
-// const restoreSubmission = async (req, res) => {
-// try {
-// const { id } = req.params;
-// const submission = await formSubmissionService.restoreSubmission(id);
-// 
-// return res.json({
-// success: true,
-// message: 'Form submission restored successfully',
-// data: submission,
-// });
-// } catch (error) {
-// if (error.message === "Submission not found" || error.message === "Submission is not deleted") {
-// return res.status(404).json({
-// success: false,
-// error: error.message,
-// });
-// }
-// 
-// return res.status(500).json({
-// success: false,
-// error: 'Internal Server Error',
-// });
-// }
-// }
-// 
-// const archiveSubmission = async (req, res) => {
-// const { id } = req.params;
-// try {
-// const submission = await formSubmissionService.archiveSubmission(id);
-// return res.json({
-// success: true,
-// message: 'Form submission archived successfully',
-// data: submission,
-// });
-// } catch (error) {
-// if (error.message === "Submission not found" || error.message === "Submission already archived") {
-// return res.status(404).json({
-// success: false,
-// error: error.message,
-// });
-// }
-// return res.status(500).json({
-// success: false,
-// error: 'Internal Server Error',
-// });
-// }
-// }
-// 
-// const unarchiveSubmission = async (req, res) => {
-// const { id } = req.params;
-// try {
-// const submission = await formSubmissionService.unarchiveSubmission(id);
-// return res.json({
-// success: true,
-// message: 'Form submission unarchived successfully',
-// data: submission,
-// });
-// } catch (error) {
-// if (error.message === "Submission not found" || error.message === "Submission is not archived") {
-// return res.status(404).json({
-// success: false,
-// error: error.message,
-// })
-// }
-// return res.status(500).json({
-// success: false,
-// error: 'Internal Server Error',
-// });
-// }
-// }
 
 const updateFormSubmission = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const submission = await formSubmissionService.updateFormSubmission(id, req.validatedData);
+        const employeeData = req.user || null;
+
+        const submission = await formSubmissionService.updateFormSubmission(id, req.validatedData, employeeData);
 
         return res.json({
             success: true,
             message: "Form submission updated successfully",
             data: submission,
         });
-
     } catch (error) {
-        console.log(error);
+        console.error(error);
         if (error.message === "Submission not found" || error.message === "Cannot update a deleted submission") {
             return res.status(404).json({
                 success: false,
@@ -237,15 +112,10 @@ const updateFormSubmission = async (req, res) => {
     }
 };
 
-
 module.exports = {
     createSubmission,
     getAllSubmissions,
     getSubmissions,
-    acceptSubmission,
-    // softDeleteSubmission,
-    // restoreSubmission,
-    // archiveSubmission,
-    // unarchiveSubmission,
+    getAcceptedSubmissionsController,
     updateFormSubmission,
 };

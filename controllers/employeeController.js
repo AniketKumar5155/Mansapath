@@ -3,10 +3,6 @@ const {
     getAllEmployeesService,
     getEmployeesService,
     updateEmployee,
-    // softDeleteEmployee,
-    // restoreEmployee,
-    // archiveEmployee,
-    // unarchiveEmployee,
 } = require("../services/employeeService");
 
 const createNewEmployee = async (req, res) => {
@@ -102,113 +98,9 @@ const updateEmployeeController = async (req, res) => {
     }
 };
 
-// const softDeleteEmployeeController = async (req, res) => {
-    // try {
-        // const { id } = req.params;
-        // const employee = await softDeleteEmployee(id);
-// 
-        // return res.json({
-            // success: true,
-            // message: "Employee soft deleted successfully",
-            // data: employee,
-        // });
-// 
-    // } catch (error) {
-        // if (error.message === "Employee not found" || error.message === "Employee already deleted") {
-            // return res.status(404).json({
-                // success: false,
-                // error: error.message,
-            // });
-        // }
-        // return res.status(500).json({
-            // success: false,
-            // error: "Internal Server Error",
-        // });
-    // }
-// };
-
-// const restoreEmployeeController = async (req, res) => {
-    // try {
-        // const { id } = req.params;
-        // const employee = await restoreEmployee(id);
-// 
-        // return res.json({
-            // success: true,
-            // message: "Employee restored successfully",
-            // data: employee,
-        // });
-// 
-    // } catch (error) {
-        // if (error.message === "Employee not found" || error.message === "Employee is not deleted") {
-            // return res.status(404).json({
-                // success: false,
-                // error: error.message,
-            // });
-        // }
-        // return res.status(500).json({
-            // success: false,
-            // error: "Internal Server Error",
-        // });
-    // }
-// };
-
-// const archiveEmployeeController = async (req, res) => {
-    // try {
-        // const { id } = req.params;
-        // const employee = await archiveEmployee(id);
-// 
-        // return res.json({
-            // success: true,
-            // message: "Employee archived successfully",
-            // data: employee,
-        // });
-// 
-    // } catch (error) {
-        // if (error.message === "Employee not found" || error.message === "Employee already archived") {
-            // return res.status(404).json({
-                // success: false,
-                // error: error.message,
-            // });
-        // }
-        // return res.status(500).json({
-            // success: false,
-            // error: "Internal Server Error",
-        // });
-    // }
-// };
-
-// const unarchiveEmployeeController = async (req, res) => {
-    // try {
-        // const { id } = req.params;
-        // const employee = await unarchiveEmployee(id);
-// 
-        // return res.json({
-            // success: true,
-            // message: "Employee unarchived successfully",
-            // data: employee,
-        // });
-// 
-    // } catch (error) {
-        // if (error.message === "Employee not found" || error.message === "Employee is not archived") {
-            // return res.status(404).json({
-                // success: false,
-                // error: error.message,
-            // });
-        // }
-        // return res.status(500).json({
-            // success: false,
-            // error: "Internal Server Error",
-        // });
-    // }
-// };
-// 
 module.exports = {
     createNewEmployee,
     getAllEmployeesController,
     getEmployeesController,
     updateEmployeeController,
-    // softDeleteEmployeeController,
-    // restoreEmployeeController,
-    // archiveEmployeeController,
-    // unarchiveEmployeeController,
 };
