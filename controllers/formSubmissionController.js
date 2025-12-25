@@ -1,5 +1,4 @@
 const formSubmissionService = require('../services/formSubmissionService');
-const buildFullName = require('../utils/buildName');
 
 const createSubmission = async (req, res) => {
     try {
@@ -37,22 +36,25 @@ const getAllSubmissions = async (req, res) => {
 
 const getSubmissions = async (req, res) => {
     try {
+        const user = req.user;
         const sortType = req.query.sortType || 'created_at';
         const sortDirection = req.query.sortDirection?.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
         const status = req.query.status;
+        const category = req.query.category;
         const page = Number(req.query.page) || 1;
         const limit = Number(req.query.limit) || 10;
         const search = req.query.search || "";
 
         const result = await formSubmissionService.getSubmissions({
+            user,
             status,
+            category,
             sortType,
             sortDirection,
             page,
             limit,
             search,
         });
-
         return res.json({
             success: true,
             message: 'Form submissions retrieved successfully',
@@ -101,6 +103,11 @@ const updateFormSubmission = async (req, res) => {
         console.error(error);
         if (error.message === "Submission not found" || error.message === "Cannot update a deleted submission") {
             return res.status(404).json({
+                success: false,
+                error: error.message
+            });
+        }else if(error.message === "Submission is already enrolled"){
+            return res.status(400).json({
                 success: false,
                 error: error.message
             });
