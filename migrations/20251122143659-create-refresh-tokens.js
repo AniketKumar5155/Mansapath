@@ -11,7 +11,7 @@ module.exports = {
       },
 
       user_id: {
-        type: Sequelize.INTEGER, 
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: "users",
@@ -48,9 +48,7 @@ module.exports = {
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal(
-          "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
-        )
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       }
     });
   },

@@ -2,9 +2,14 @@
 
 const { Model, DataTypes } = require('sequelize');
 
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
     class FormSubmission extends Model {
         static associate(models) {
+            FormSubmission.belongsToMany(models.Issue, {
+                through: models.SubmissionIssue,
+                foreignKey: 'form_submission_id',
+            });
+
 
         }
     }
@@ -66,6 +71,10 @@ module.exports = (sequelize) => {
             },
             problem_description: {
                 type: DataTypes.TEXT,
+                allowNull: true,
+            },
+            payment_method:{
+                type: DataTypes.ENUM('FULL', 'INSTALLMENT'),
                 allowNull: true,
             },
             is_deleted: {

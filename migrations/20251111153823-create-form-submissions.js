@@ -55,6 +55,10 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
+      payment_method: {
+        type: Sequelize.ENUM('FULL', 'INSTALLMENT'),
+        allowNull: true,
+      },
       is_deleted: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
