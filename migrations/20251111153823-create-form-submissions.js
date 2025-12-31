@@ -31,11 +31,11 @@ module.exports = {
         allowNull: false,
       },
       status: {
-        type: Sequelize.ENUM('PENDING', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'OPEN'),
+        type: Sequelize.ENUM('ENROLLED', 'PENDING', 'REJECTED'),
         allowNull: true,
       },
       category: {
-        type: Sequelize.ENUM('MENTAL FITNESS', 'MENTAL THERAPY', 'CHAITAINYA'),
+        type: Sequelize.ENUM('CHAITANYA', 'BRAIN GYM', 'BODH'),
         allowNull: true,
         defaultValue: null,
       },

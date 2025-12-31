@@ -6,7 +6,7 @@ module.exports = (sequelize) => {
   class SubmissionIssue extends Model {
     static associate(models) {
       SubmissionIssue.belongsTo(models.FormSubmission, {
-        foreignKey: 'form_submission_id',
+        foreignKey: 'submission_id',
       });
 
       SubmissionIssue.belongsTo(models.Issue, {
@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
         primaryKey: true,
       },
 
-      form_submission_id: {
+      submission_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -51,7 +51,7 @@ module.exports = (sequelize) => {
       indexes: [
         {
           unique: true,
-          fields: ['form_submission_id', 'issue_id'],
+          fields: ['submission_id', 'issue_id'],
         },
       ],
     }

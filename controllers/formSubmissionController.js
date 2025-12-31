@@ -69,6 +69,24 @@ const getSubmissions = async (req, res) => {
     }
 };
 
+const getSubmissionByIdController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const submission = await formSubmissionService.getSubmissionById(id);
+        return res.status(200).json({
+            success: true,
+            message: "Submission fetched successfully",
+            data: submission,
+        });
+    }catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch submission"
+        })
+    }
+}
+
 const getAcceptedSubmissionsController = async (req, res) => {
     try {
         const submissions = await formSubmissionService.getAcceptedSubmissionsService();
@@ -123,6 +141,7 @@ module.exports = {
     createSubmission,
     getAllSubmissions,
     getSubmissions,
+    getSubmissionByIdController,
     getAcceptedSubmissionsController,
     updateFormSubmission,
 };

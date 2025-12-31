@@ -22,7 +22,7 @@ export const formSubmissionSchema = z.object({
   }),
 
   age: z
-    .number({ required_error: "Age is required" })
+    .coerce.number({ required_error: "Age is required" })
     .int("Age must be an integer")
     .min(1, "Age cannot be empty")
     .max(120, "Age cannot be greater than 120"),
@@ -48,6 +48,14 @@ export const formSubmissionSchema = z.object({
     .max(2000, "Problem description too long")
     .optional()
     .or(z.literal("").optional()),
+
+  issues: z
+    .array(
+      z.coerce.number().int().positive("Invalid issue id")
+    )
+    .min(1, "Please select at least one issue")
+    .optional(),
+
 });
 
 export const formUpdateSchema = z.object({
@@ -69,6 +77,19 @@ export const formUpdateSchema = z.object({
   address: z.string().max(300).optional(),
   problem_description: z.string().max(2000).optional(),
 
-  status: z.enum(["PENDING", "IN_PROGRESS", "RESOLVED", "CLOSED", "OPEN"]).optional(),
-  category: z.enum(["MENTAL FITNESS", "MENTAL THERAPY", "CHAITAINYA"]).optional()
+  status: z
+    .enum(['ENROLLED', 'PENDING', 'REJECTED'])
+    .optional(),
+
+  category: z
+    .enum(["CHAITANYA", "BRAIN GYM", "BODH"])
+    .optional(),
+
+  issues: z
+    .array(z.number().int().positive())
+    .optional(),
+
+  payment_method: z
+    .enum(["FULL", "INSTALLMENT"])
+    .optional(),
 });

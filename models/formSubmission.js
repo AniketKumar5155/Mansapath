@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             FormSubmission.belongsToMany(models.Issue, {
                 through: models.SubmissionIssue,
-                foreignKey: 'form_submission_id',
+                foreignKey: 'submission_id',
+                otherKey: 'issue_id',
             });
 
 
@@ -35,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             gender: {
-                type: DataTypes.ENUM('MALE', 'FEMALE', 'OTHER', 'RATHER NOT SAY', "PINEAPPLE"),
+                type: DataTypes.ENUM('MALE', 'FEMALE', 'OTHER', 'RATHER NOT SAY'),
                 allowNull: false,
             },
             age: {
@@ -43,11 +44,11 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             status: {
-                type: DataTypes.ENUM('PENDING', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'OPEN'),
+                type: DataTypes.ENUM('ENROLLED', 'PENDING', 'REJECTED'),
                 allowNull: true,
             },
             category: {
-                type: DataTypes.ENUM('MENTAL FITNESS', 'MENTAL THERAPY', 'CHAITAINYA'),
+                type: DataTypes.ENUM('CHAITANYA', 'BRAIN GYM', 'BODH'),
                 allowNull: true,
                 defaultValue: null,
             },
@@ -73,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.TEXT,
                 allowNull: true,
             },
-            payment_method:{
+            payment_method: {
                 type: DataTypes.ENUM('FULL', 'INSTALLMENT'),
                 allowNull: true,
             },

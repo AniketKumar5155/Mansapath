@@ -12,6 +12,7 @@ module.exports = (sequelize) => {
             Issue.belongsToMany(models.FormSubmission, {
                 through: models.SubmissionIssue,
                 foreignKey: 'issue_id',
+                otherKey: 'submission_id',
             });
         }
     }
