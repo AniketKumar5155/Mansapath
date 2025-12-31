@@ -61,6 +61,17 @@ const getEmployeesService = async ({
   };
 };
 
+const getEmployeeByIdService = async (id) => {
+  validateId(id);
+  const admin = await User.findByPk(id);
+  if(!admin){
+    const error = new Error("Employee not found");
+    error.statusCode = 404;
+    throw error;
+  }
+  return admin;
+}
+
 const updateEmployee = async (id, updatedData) => {
   validateId(id);
 
@@ -81,5 +92,6 @@ module.exports = {
   createEmployee,
   getAllEmployeesService,
   getEmployeesService,
+  getEmployeeByIdService,
   updateEmployee,
 };

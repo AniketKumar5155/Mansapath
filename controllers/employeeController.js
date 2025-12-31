@@ -3,6 +3,7 @@ const {
     getAllEmployeesService,
     getEmployeesService,
     updateEmployee,
+    getEmployeeByIdService,
 } = require("../services/employeeService");
 
 const createNewEmployee = async (req, res) => {
@@ -24,14 +25,14 @@ const createNewEmployee = async (req, res) => {
 };
 
 const getAllEmployeesController = async (req, res) => {
-    try{
-        const employees  = await getAllEmployeesService();
+    try {
+        const employees = await getAllEmployeesService();
         return res.status(200).json({
             success: true,
             message: "All employees fetched successfully",
             data: employees,
         })
-    }catch(error){
+    } catch (error) {
         return res.status(500).json({
             success: false,
             message: "Failed to fetched all employees"
@@ -71,6 +72,26 @@ const getEmployeesController = async (req, res) => {
     }
 };
 
+const getEmployeeByIdController = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const employee = await getEmployeeByIdService(id);
+
+        return res.status(200).json({
+            success: true,
+            message: "Employee fetched successfully",
+            data: employee,
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(error.statusCode || 500).json({
+            success: false,
+            message: error.message || "Internal Server Error",
+        })
+    }
+}
+
 const updateEmployeeController = async (req, res) => {
     try {
         const { id } = req.params;
@@ -102,5 +123,6 @@ module.exports = {
     createNewEmployee,
     getAllEmployeesController,
     getEmployeesController,
+    getEmployeeByIdController,
     updateEmployeeController,
 };

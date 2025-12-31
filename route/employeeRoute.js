@@ -7,6 +7,7 @@ const {
   getAllEmployeesController,
   getEmployeesController,
   updateEmployeeController,
+  getEmployeeByIdController,
 } = require("../controllers/employeeController");
 
 const {
@@ -39,6 +40,13 @@ employeeRoute.get(
   authorize(["SUPERADMIN"]),
   getAllEmployeesController
 );
+
+employeeRoute.get(
+  "/employee/:id",
+  authMiddleware,
+  authorize(["SUPERADMIN"]),
+  getEmployeeByIdController,
+)
 
 employeeRoute.put(
   "/update-employee/:id",
