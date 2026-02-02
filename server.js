@@ -8,6 +8,7 @@ const db = require('./models');
 const formSubmissionRoute = require('./route/formSubmissionRoute');
 const employeeRoute = require('./route/employeeRoute');
 const authRoute = require('./route/authRoute');
+const userQueryRouter = require('./route/userQueryRoute')
 // const notFoundMiddleware = require('./middleware/notFoundMiddleware');
 // const errorHandlerMiddleware = require('./middleware/errorHandlerMiddleware');
 
@@ -42,6 +43,7 @@ app.use(
 app.use('/api/forms', formSubmissionRoute);
 app.use('/api/employees', employeeRoute);
 app.use('/api/auth', authRoute);
+app.use('/api/user-query', userQueryRouter)
 
 
 const PORT = process.env.PORT || 3000;

@@ -21,8 +21,8 @@ const authorize = require("../middleware/authorize");
 
 employeeRoute.post(
   "/create-employee",
-  authMiddleware,
-  authorize(["SUPERADMIN"]),
+  // authMiddleware,
+  // authorize(["SUPERADMIN"]),
   validateEmployee,
   createNewEmployee
 );

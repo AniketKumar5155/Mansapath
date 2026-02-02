@@ -1,8 +1,23 @@
-const formSubmissionService = require('../services/formSubmissionService');
 
+const formSubmissionService = require('../services/formSubmissionService');
+const sendEmail = require("../utils/sendEmail")
 const createSubmission = async (req, res) => {
     try {
         const submission = await formSubmissionService.createSubmission(req.validatedData);
+
+        if (req.validatedData.email) {
+            try {
+                await sendEmail({
+                    to: req.validatedData.email,
+                    subject: 'Form Submission Successful',
+                    text: 'Your form has been submitted successfully. Thank you!',
+                    html: '<p>Your form has been submitted successfully. Thank you!</p>'
+                });
+            } catch (emailError) {
+                console.error('Failed to send success email:', emailError);
+            }
+        }
+
         return res.status(201).json({
             success: true,
             message: 'Form submitted successfully!',
@@ -87,6 +102,25 @@ const getSubmissionByIdController = async (req, res) => {
     }
 }
 
+const getSubmissionCounts = async (req, res) => {
+    try {
+        const counts = await formSubmissionService.getSubmissionCountsService();
+
+        res.status(200).json({
+            success: true,
+            data: counts,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch submission counts",
+            error: err.message,
+        });
+    }
+};
+
+
 const getAcceptedSubmissionsController = async (req, res) => {
     try {
         const submissions = await formSubmissionService.getAcceptedSubmissionsService();
@@ -144,4 +178,5 @@ module.exports = {
     getSubmissionByIdController,
     getAcceptedSubmissionsController,
     updateFormSubmission,
+    getSubmissionCounts,
 };

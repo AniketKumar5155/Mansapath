@@ -139,7 +139,7 @@ const getSubmissions = async ({
 const getSubmissionById = async (id) => {
     validateId(id);
 
-    const submission = await FormSubmission.findByPk(id, { 
+    const submission = await FormSubmission.findByPk(id, {
         include: [
             {
                 model: Issue,
@@ -161,13 +161,53 @@ const getSubmissionById = async (id) => {
     return submission;
 };
 
-const getAcceptedSubmissionsService = async () => {
-    const acceptedSubmissions = await FormSubmission.findAll({
-        where: { status: "ENROLLED" },
-        order: [["accepted_at", "DESC"]],
+const getSubmissionCountsService = async () => {
+    const sequelize = FormSubmission.sequelize;
+
+    const categories = await IssueCategory.findAll({ attributes: ['id', 'name'] });
+
+    const categoryCases = categories
+        .map(cat => `SUM(CASE WHEN fs.status = 'ENROLLED' AND ic.id = ${cat.id} THEN 1 ELSE 0 END) AS "${cat.name}"`)
+        .join(', ');
+
+    const query = `
+        SELECT
+            fs.status,
+            COUNT(*) AS total_count,
+            ${categoryCases}
+        FROM FormSubmissions fs
+        LEFT JOIN SubmissionIssues si ON fs.id = si.submission_id
+        LEFT JOIN Issues i ON si.issue_id = i.id
+        LEFT JOIN IssueCategories ic ON i.issue_category_id = ic.id
+        GROUP BY fs.status
+        ORDER BY 
+            CASE 
+                WHEN fs.status IS NULL THEN 1
+                WHEN fs.status = 'PENDING' THEN 2
+                WHEN fs.status = 'REJECTED' THEN 3
+                WHEN fs.status = 'ENROLLED' THEN 4
+                ELSE 5
+            END
+    `;
+
+    const counts = await sequelize.query(query, { type: Sequelize.QueryTypes.SELECT });
+
+    const formatted = counts.map(row => {
+        const { status, total_count, ...categories } = row;
+        return {
+            status: status === null ? 'NULL' : status,
+            total: Number(total_count),
+            categories: status === 'ENROLLED'
+                ? Object.fromEntries(
+                    Object.entries(categories).map(([k, v]) => [k, Number(v)])
+                )
+                : {}
+        };
     });
-    return acceptedSubmissions;
+
+    return formatted;
 };
+
 
 const updateFormSubmission = async (id, updatedData, employeeData = null) => {
     validateId(id);
@@ -220,6 +260,6 @@ module.exports = {
     getSubmissions,
     getAllSubmissions,
     getSubmissionById,
-    getAcceptedSubmissionsService,
     updateFormSubmission,
+    getSubmissionCountsService,
 };

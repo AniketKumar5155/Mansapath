@@ -20,8 +20,8 @@ const validateFormSubmission = (req, res, next) => {
   } catch (error) {
     console.error("Validation error", error);
 
-    if (error?.name === "ZodError" && error?.errors) {
-      const errors = error.errors.map(err => ({
+    if (error?.name === "ZodError" && error?.issues) {
+      const errors = error.issues.map(err => ({
         field: err.path.join("."),
         message: err.message,
       }));
@@ -54,8 +54,8 @@ const validateEmployee = (req, res, next) => {
   } catch (error) {
     console.error("Validation error", error);
 
-    if (error?.name === "ZodError" && error?.errors) {
-      const errors = error.errors.map(err => ({
+    if (error?.name === "ZodError" && error?.issues) {
+      const errors = error.issues.map(err => ({
         field: err.path.join("."),
         message: err.message,
       }));
@@ -90,7 +90,7 @@ const validateUpdateSubmission = (req, res, next) => {
       return res.status(400).json({
         success: false,
         error: "Validation failed",
-        details: error.errors.map(e => ({
+        details: error.issues.map(e => ({
           field: e.path.join("."),
           message: e.message
         }))
@@ -118,7 +118,7 @@ const validateEmployeeUpdate = (req, res, next) => {
   } catch (error) {
     console.error("Validation error", error);
 
-    if (error?.name === "ZodError" && error?.errors) {
+    if (error?.name === "ZodError" && error?.issues) {
       const errors = error.errors.map(err => ({
         field: err.path.join("."),
         message: err.message,

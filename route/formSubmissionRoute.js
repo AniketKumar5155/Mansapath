@@ -8,7 +8,8 @@ const {
     updateFormSubmission,
     // acceptSubmission,
     getAcceptedSubmissionsController,
-    getSubmissionByIdController
+    getSubmissionByIdController,
+    getSubmissionCounts
 } = require('../controllers/formSubmissionController');
 
 const authMiddleware = require('../middleware/authMiddleware');
@@ -19,6 +20,7 @@ const {
 const authorize = require('../middleware/authorize');
 
 formSubmissionRoute.post('/submit', validateFormSubmission, createSubmission);
+formSubmissionRoute.get("/count", authMiddleware, authorize(["SUPERADMIN"]), getSubmissionCounts)
 formSubmissionRoute.get('/all-submissions', authMiddleware, getAllSubmissions);
 formSubmissionRoute.get('/submissions', authMiddleware, getSubmissions);
 formSubmissionRoute.get('/submission/:id', authMiddleware, getSubmissionByIdController);
