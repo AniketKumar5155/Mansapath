@@ -138,6 +138,23 @@ const getAcceptedSubmissionsController = async (req, res) => {
     }
 };
 
+const getEmployeeLeaderboardController = async (req, res) => {
+    try {
+        const leaderboard = await formSubmissionService.getEmployeeLeaderboardService();
+        return res.status(200).json({
+            success: true,
+            message: "Employee leaderboard fetched successfully",
+            data: leaderboard,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch employee leaderboard"
+        });
+    }
+};
+
 const updateFormSubmission = async (req, res) => {
     try {
         const { id } = req.params;
@@ -177,6 +194,7 @@ module.exports = {
     getSubmissions,
     getSubmissionByIdController,
     getAcceptedSubmissionsController,
+    getEmployeeLeaderboardController,
     updateFormSubmission,
     getSubmissionCounts,
 };

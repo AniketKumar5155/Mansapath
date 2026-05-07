@@ -18,32 +18,39 @@ const allowedOrigins = [
   'http://localhost:5174',
   'http://192.168.29.114:5174',
   'https://xmjgqlt1-5173.inc1.devtunnels.ms',
+  'http://10.117.245.108:3000',
+  'http://10.117.245.108:5173',
 ];
 
 const app = express();
 
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-  })
-);
+// app.use(
+  // cors({
+    // origin: (origin, callback) => {
+      // if (!origin || allowedOrigins.includes(origin)) {
+        // callback(null, true);
+      // } else {
+        // callback(new Error('Not allowed by CORS'));
+      // }
+    // },
+    // credentials: true,
+  // })
+// );
+
+// app.use(cors({ origin: true, credentials: true }))
 
 app.use('/api/forms', formSubmissionRoute);
 app.use('/api/employees', employeeRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/user-query', userQueryRouter)
+app.get('/test', (req, res) => {
+  res.json({ ok: true, device: 'phone connected' });
+});
 
 
 const PORT = process.env.PORT || 3000;

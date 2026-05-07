@@ -9,7 +9,8 @@ const {
     // acceptSubmission,
     getAcceptedSubmissionsController,
     getSubmissionByIdController,
-    getSubmissionCounts
+    getSubmissionCounts,
+    getEmployeeLeaderboardController
 } = require('../controllers/formSubmissionController');
 
 const authMiddleware = require('../middleware/authMiddleware');
@@ -25,6 +26,7 @@ formSubmissionRoute.get('/all-submissions', authMiddleware, getAllSubmissions);
 formSubmissionRoute.get('/submissions', authMiddleware, getSubmissions);
 formSubmissionRoute.get('/submission/:id', authMiddleware, getSubmissionByIdController);
 formSubmissionRoute.get("/all-accepted-submissions", authMiddleware, authorize(["SUPERADMIN"]), getAcceptedSubmissionsController);
+formSubmissionRoute.get("/employee-leaderboard", authMiddleware, authorize(["SUPERADMIN"]), getEmployeeLeaderboardController);
 formSubmissionRoute.patch("/update-submission/:id", authMiddleware, validateUpdateSubmission, updateFormSubmission);
 // formSubmissionRoute.patch("/accept/:id", authMiddleware, acceptSubmission);
 

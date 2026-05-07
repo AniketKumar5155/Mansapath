@@ -208,6 +208,68 @@ const getSubmissionCountsService = async () => {
     return formatted;
 };
 
+const getAcceptedSubmissionsService = async () => {
+    const submissions = await FormSubmission.findAll({
+        where: { status: "ENROLLED" },
+        order: [["accepted_at", "DESC"]],
+        include: [
+            {
+                model: Issue,
+                through: { attributes: [] },
+                include: [
+                    {
+                        model: IssueCategory,
+                        attributes: ['id', 'name']
+                    }
+                ],
+                attributes: ['id', 'name']
+            }
+        ]
+    });
+
+    return submissions;
+};
+
+const getEmployeeLeaderboardService = async () => {
+    const submissions = await FormSubmission.findAll({
+        where: { status: "ENROLLED" },
+        order: [["accepted_at", "DESC"]],
+        include: [
+            {
+                model: Issue,
+                through: { attributes: [] },
+                include: [
+                    {
+                        model: IssueCategory,
+                        attributes: ['id', 'name']
+                    }
+                ],
+                attributes: ['id', 'name']
+            }
+        ]
+    });
+
+    const leaderboard = {};
+
+    submissions.forEach((submission) => {
+        const employeeName = submission.accepted_by || "Unknown Employee";
+
+        if (!leaderboard[employeeName]) {
+            leaderboard[employeeName] = {
+                employee_name: employeeName,
+                total_submissions: 0,
+                submissions: [],
+            };
+        }
+
+        leaderboard[employeeName].total_submissions += 1;
+        leaderboard[employeeName].submissions.push(submission);
+    });
+
+    return Object.values(leaderboard).sort(
+        (a, b) => b.total_submissions - a.total_submissions
+    );
+};
 
 const updateFormSubmission = async (id, updatedData, employeeData = null) => {
     validateId(id);
@@ -262,4 +324,6 @@ module.exports = {
     getSubmissionById,
     updateFormSubmission,
     getSubmissionCountsService,
+    getAcceptedSubmissionsService,
+    getEmployeeLeaderboardService,
 };
