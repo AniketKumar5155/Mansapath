@@ -12,14 +12,9 @@ const employeeLogin = async (email, password, ip, userAgent) => {
     error.statusCode = 404;
     throw error;
   }
-  // 
-  //   if (!user.isActive) {
-  // const error = new Error("Account disabled");
-  // error.statusCode = 403;
-  // throw error;
-  //   }
 
   const isPasswordValid = await verifyData(password, user.password_hash);
+  console.log("Password validation result:", isPasswordValid);
 
   if (!isPasswordValid) {
     const error = new Error("Invalid credentials");
@@ -47,7 +42,6 @@ const employeeLogin = async (email, password, ip, userAgent) => {
     role: user.role,
     name: `${user.first_name} ${user.last_name}`
   };
-
   return { user: safeUser, accessToken, refreshToken };
 };
 

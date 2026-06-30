@@ -1,6 +1,6 @@
-
 const formSubmissionService = require('../services/formSubmissionService');
-const sendEmail = require("../utils/sendEmail")
+const sendEmail = require("../utils/sendEmail");
+
 const createSubmission = async (req, res) => {
     try {
         const submission = await formSubmissionService.createSubmission(req.validatedData);

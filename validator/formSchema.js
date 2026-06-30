@@ -1,6 +1,9 @@
-import { z } from "zod";
+const { z } = require("zod");
 
-export const formSubmissionSchema = z.object({
+const COURSE_VALUES = ["CHAITANYA", "BRAIN GYM"];
+const CATEGORY_VALUES = ["CHAITANYA", "BRAIN GYM", "BODH"];
+
+const formSubmissionSchema = z.object({
   first_name: z
     .string({ required_error: "First name is required" })
     .min(1, "First name cannot be empty")
@@ -43,6 +46,10 @@ export const formSubmissionSchema = z.object({
     .min(1, "Address cannot be empty")
     .max(300, "Address must be at most 300 characters"),
 
+  choose_your_course: z.enum(COURSE_VALUES, {
+    required_error: "Course selection is required",
+  }),
+
   problem_description: z
     .string()
     .max(2000, "Problem description too long")
@@ -50,15 +57,20 @@ export const formSubmissionSchema = z.object({
     .or(z.literal("").optional()),
 
   issues: z
-    .array(
-      z.coerce.number().int().positive("Invalid issue id")
-    )
+    .array(z.coerce.number().int().positive("Invalid issue id"))
     .min(1, "Please select at least one issue")
     .optional(),
 
+  status: z
+    .enum(["ENROLLED", "PENDING", "REJECTED"])
+    .optional(),
+
+  category: z
+    .enum(CATEGORY_VALUES)
+    .optional(),
 });
 
-export const formUpdateSchema = z.object({
+const formUpdateSchema = z.object({
   first_name: z.string().min(1).max(50).optional(),
   middle_name: z.string().max(50).optional(),
   last_name: z.string().min(1).max(50).optional(),
@@ -75,14 +87,19 @@ export const formUpdateSchema = z.object({
   email: z.string().email().max(100).optional(),
   phone_number: z.string().regex(/^[0-9+\-() ]{7,15}$/).optional(),
   address: z.string().max(300).optional(),
+
+  choose_your_course: z
+    .enum(COURSE_VALUES)
+    .optional(),
+
   problem_description: z.string().max(2000).optional(),
 
   status: z
-    .enum(['ENROLLED', 'PENDING', 'REJECTED'])
+    .enum(["ENROLLED", "PENDING", "REJECTED"])
     .optional(),
 
   category: z
-    .enum(["CHAITANYA", "BRAIN GYM", "BODH"])
+    .enum(CATEGORY_VALUES)
     .optional(),
 
   issues: z
@@ -93,3 +110,8 @@ export const formUpdateSchema = z.object({
     .enum(["FULL", "INSTALLMENT"])
     .optional(),
 });
+
+module.exports = {
+  formSubmissionSchema,
+  formUpdateSchema,
+};

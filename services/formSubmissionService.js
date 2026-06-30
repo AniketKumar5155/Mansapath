@@ -23,7 +23,6 @@ const createSubmission = async (submissionData) => {
     return submission;
 };
 
-
 const getAllSubmissions = async () => {
     const submissions = await FormSubmission.findAll({
         include: [
@@ -315,7 +314,6 @@ const updateFormSubmission = async (id, updatedData, employeeData = null) => {
         return submission;
     });
 };
-
 
 module.exports = {
     createSubmission,

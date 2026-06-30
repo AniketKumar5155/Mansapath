@@ -18,19 +18,18 @@ const {
 const authMiddleware = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
 
-
 employeeRoute.post(
   "/create-employee",
-  // authMiddleware,
-  // authorize(["SUPERADMIN"]),
+  authMiddleware,
+  authorize(["SUPERADMIN"]),
   validateEmployee,
   createNewEmployee
 );
 
 employeeRoute.get(
   "/employees",
-  authMiddleware,
-  authorize(["SUPERADMIN"]),
+  // authMiddleware,
+  // authorize(["SUPERADMIN"]),
   getEmployeesController
 );
 
@@ -55,6 +54,5 @@ employeeRoute.put(
   validateEmployeeUpdate,
   updateEmployeeController
 );
-
 
 module.exports = employeeRoute;

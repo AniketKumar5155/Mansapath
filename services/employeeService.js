@@ -13,8 +13,7 @@ const createEmployee = async (employeeData) => {
   return await User.create({
   ...rest,
   password_hash,
-});
-
+})
 };
 
 const getAllEmployeesService = async () => {

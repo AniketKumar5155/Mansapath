@@ -52,6 +52,11 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: true,
                 defaultValue: null,
             },
+            choose_your_course: {
+                type: DataTypes.ENUM('CHAITANYA', 'BRAIN GYM', 'BODH'),
+                allowNull: true,
+                defaultValue: null,
+            },
             email: {
                 type: DataTypes.STRING(100),
                 allowNull: true,

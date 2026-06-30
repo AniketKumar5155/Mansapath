@@ -39,6 +39,11 @@ module.exports = {
         allowNull: true,
         defaultValue: null,
       },
+      choose_your_course: {
+        type: Sequelize.ENUM('CHAITANYA', 'BRAIN GYM', 'BODH'),
+        allowNull: true,
+        defaultValue: null,
+      },
       email: {
         type: Sequelize.STRING(100),
         allowNull: true,
