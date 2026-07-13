@@ -315,6 +315,15 @@ const updateFormSubmission = async (id, updatedData, employeeData = null) => {
     });
 };
 
+const deleteFormSubmissionService = async (id) => {
+    validateId(id);
+    const submission = await FormSubmission.findByPk(id);
+    if(!submission){
+        throw new Error("Submission not found");
+    }
+    await submission.destroy();
+}
+
 module.exports = {
     createSubmission,
     getSubmissions,
@@ -324,4 +333,5 @@ module.exports = {
     getSubmissionCountsService,
     getAcceptedSubmissionsService,
     getEmployeeLeaderboardService,
+    deleteFormSubmissionService,
 };

@@ -10,7 +10,8 @@ const {
     getAcceptedSubmissionsController,
     getSubmissionByIdController,
     getSubmissionCounts,
-    getEmployeeLeaderboardController
+    getEmployeeLeaderboardController,
+    deleteSubmissionController
 } = require('../controllers/formSubmissionController');
 
 const authMiddleware = require('../middleware/authMiddleware');
@@ -28,6 +29,7 @@ formSubmissionRoute.get('/submission/:id', authMiddleware, getSubmissionByIdCont
 formSubmissionRoute.get("/all-accepted-submissions", authMiddleware, authorize(["SUPERADMIN"]), getAcceptedSubmissionsController);
 formSubmissionRoute.get("/employee-leaderboard", authMiddleware, authorize(["SUPERADMIN"]), getEmployeeLeaderboardController);
 formSubmissionRoute.patch("/update-submission/:id", authMiddleware, validateUpdateSubmission, updateFormSubmission);
+formSubmissionRoute.delete("/delete-submission/:id", authMiddleware, authorize(["SUPERADMIN"]), deleteSubmissionController);
 // formSubmissionRoute.patch("/accept/:id", authMiddleware, acceptSubmission);
 
 module.exports = formSubmissionRoute;
