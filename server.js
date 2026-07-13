@@ -9,8 +9,7 @@ const formSubmissionRoute = require('./route/formSubmissionRoute');
 const employeeRoute = require('./route/employeeRoute');
 const authRoute = require('./route/authRoute');
 const userQueryRouter = require('./route/userQueryRoute')
-// const notFoundMiddleware = require('./middleware/notFoundMiddleware');
-// const errorHandlerMiddleware = require('./middleware/errorHandlerMiddleware');
+const serverless = require('serverless-http');
 
 const allowedOrigins = [
   'http://localhost:5173',
@@ -52,8 +51,11 @@ app.get('/test', (req, res) => {
   res.json({ ok: true, device: 'phone connected' });
 });
 
+if (!process.env.LAMBDA_TASK_ROOT) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Local development server running on http://localhost:${PORT}`);
+  });
+}
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on http://<your-local-ip>:${PORT}`);
-});
+module.exports.handler = serverless(app);
